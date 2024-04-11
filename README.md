@@ -41,7 +41,9 @@ Siga estes passos para configurar o projeto localmente:
 
 ## Caso de Uso
 <br/>
-![CASODEUSO](/images/image.png)
+    <div align="center">
+    <img src="/images/image.png" alt="caso_de_uso" />
+    </div>
 <br/>
 
 
