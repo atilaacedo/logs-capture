@@ -1,38 +1,61 @@
 package com.ucsal.log.component;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 
 import com.ucsal.log.interfaces.ILogger;
+import com.ucsal.log.utils.enums.TipoSaida;
 
 public class LoggerComp implements ILogger{
 	
-	private Logger logger;
+	private static final String ARQUIVO_LOG = "log.txt";
 	
-	public LoggerComp(Class<?> clazz) {
-		this.logger = LogManager.getLogger(clazz);
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    private Class<?> classLog;
+    
+    private TipoSaida tipoSaida;
+    
+    
+    public LoggerComp(Class<?> clazz, TipoSaida tipoSaida) {
+		this.classLog = clazz;
+		this.tipoSaida = tipoSaida;
 	}
 	
-	@Override
-	public void debug(String message) {
-		this.logger.debug(message);
-	}
+    public void info(String mensagem) {
+        this.registrarMensagem("INFO", mensagem);
+    }
 
-	@Override
-	public void info(String message) {
-		this.logger.info(message);
-	}
+    public void error(String mensagem, Throwable throwlable) {
+        this.registrarMensagem("ERRO", mensagem, throwlable.getMessage());
+    }
 
-	@Override
-	public void warn(String message) {
-		this.logger.warn(message);
-		
-	}
-
-	@Override
-	public void error(String message, Throwable throwable) {
-		this.logger.error(message, throwable);
-		
-	}
-
+    private void registrarMensagem(String nivel, String mensagem) {
+    	LocalDateTime agora = LocalDateTime.now();
+    	String mensagemLog = FORMATO_DATA.format(agora) + " [" + this.classLog.getSimpleName() +"] " + " [" + nivel + "] " + mensagem;
+    	if(this.tipoSaida == TipoSaida.CONSOLE) {
+    		System.out.println(mensagemLog);
+    	}else {
+	        try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_LOG, true))) {
+	            writer.println(mensagemLog);
+	        } catch (IOException e) {
+	            System.err.println("Erro ao registrar mensagem de log: " + e.getMessage());
+	        }
+    	}
+    }
+    
+    private void registrarMensagem(String nivel, String mensagem, String erro) {
+    	LocalDateTime agora = LocalDateTime.now();
+    	String mensagemLog = FORMATO_DATA.format(agora) + " [" + this.classLog.getSimpleName() +"] "+" [" + nivel + "] " + mensagem + '\n' + erro;
+        try (PrintWriter writer = new PrintWriter(new FileWriter(ARQUIVO_LOG, true))) {
+            writer.println(mensagemLog);
+        } catch (IOException e) {
+            System.err.println("Erro ao registrar mensagem de log: " + e.getMessage());
+        }
+    }
 }

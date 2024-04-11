@@ -7,17 +7,18 @@ import java.lang.reflect.Modifier;
 import com.ucsal.log.annotations.InjectLogger;
 import com.ucsal.log.component.LoggerComp;
 import com.ucsal.log.interfaces.ILogger;
+import com.ucsal.log.utils.enums.TipoSaida;
 
 public class LoggerFactory {
 	private static final Map<Class<?>, ILogger> loggers = new HashMap<>();
 
-	  public static void injectLogger(Object object) {
+	  public static void injectLogger(Object object, TipoSaida tipoSaida) {
 	        Class<?> clazz = object.getClass();
 	        for (Field field : clazz.getDeclaredFields()) {
 	            if (field.isAnnotationPresent(InjectLogger.class)) {
 	                field.setAccessible(true);
 	                try {
-	                    ILogger logger = loggers.computeIfAbsent(clazz, LoggerComp::new);
+	                	ILogger logger = loggers.computeIfAbsent(clazz, c -> new LoggerComp(c, tipoSaida));
 	                    if (Modifier.isStatic(field.getModifiers())) {
 	                        field.set(null, logger);
 	                    } else {
