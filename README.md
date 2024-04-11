@@ -39,6 +39,12 @@ Siga estes passos para configurar o projeto localmente:
     mvn exec:java -Dexec.mainClass="com.seuprojeto.Main"
     ```
 
+## Caso de Uso
+<br/>
+![CASODEUSO](https://cdn.discordapp.com/attachments/987696312269025313/1227826250299478037/image.png?ex=6629d14d&is=66175c4d&hm=54c31e08cf8a847bcb1756dc3d123d7028c0d788584129b7c4d4e70f62197b61&)
+<br/>
+
+
 ## Uso
 
 Inclua chamadas de log no seu código conforme necessário. Por exemplo:
