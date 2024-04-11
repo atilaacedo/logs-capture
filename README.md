@@ -46,6 +46,11 @@ Siga estes passos para configurar o projeto localmente:
     </div>
 <br/>
 
+## Diagrama UML
+<br/>
+    <div align = "center">
+    <img src="/images/uml-log.drawio.png" alt="diagrama uml"/>
+    </div>
 
 ## Uso
 
